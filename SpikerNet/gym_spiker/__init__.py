@@ -12,5 +12,5 @@ from gym.envs.registration import register
 
 register(
     id='spiker-v0',              #This is the name you call the environment by
-    entry_point='gym_spiker.envs:SpikerEnv',
+    entry_point='gym_spiker.envs:SpikerEnv',      #Based on file structure. gym_spiker folder, SpikerEnv Environment.
 )

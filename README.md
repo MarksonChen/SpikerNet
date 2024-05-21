@@ -38,3 +38,15 @@ python SpikerNet_Main.py
 ```
 Sit back and enjoy the run! Output files can be visualized using the SpikerNet_Plotter.py program.
 # Running SpikerNet in In Vivo applications
+As every experiment will have widely varying control and sensing mechanisms, SpikerNet must be customized to each experiment. To do so, we highly recommend learning the structure of OpenAI gym environments.
+To do so, see the following tutorial: https://medium.com/@apoddar573/making-your-own-custom-environment-in-gym-c3b65ff8cdaa
+In short, gym environments require the following file-structure, which is preconfigured in this repository:
+```
+SpikerNet/
+  gym_spiker/
+    __init__.py                 #Defines environment names
+    envs/
+      __init__.py
+      #Various helper files
+      spiker_env.py              #Name of the environment in genrl call
+```

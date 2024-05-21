@@ -21,3 +21,20 @@ If using a TDT interface for in vivo control, run
 ```
 pip install tdtpy
 ```
+# Running the Basal-Ganglia Thalamocortical Model
+This github profile comes packaged with a SpikerNet implementation of control of a DBS model of basal-ganglia thalamocortical control. This is detailed in the following paper:
+doi.org//10.1109/NER52421.2023.10123797. This should work out of the box, though this has not been tested on OSX operating systems. This is also a good example for how to design SpikerNet
+environments for custom in vivo runs. To run this model, navigate to the BGTC folder in Anaconda by typing
+```
+cd BGTC_SpikerNet
+```
+Ensure that the SpikerNet environment is activated by typing
+```
+conda activate SpikerNet
+```
+SpikerNet can be run on the model by simply typing:
+```
+python SpikerNet_Main.py
+```
+Sit back and enjoy the run! Output files can be visualized using the SpikerNet_Plotter.py program.
+# Running SpikerNet in In Vivo applications

@@ -68,8 +68,10 @@ conversion option, like much of the TDT hardware.
 # Example TDT Circuits
 We initially built SpikerNet to interface with TDT amplifiers, notably the RZ-2 for observation space neural recordings and an RX-7 for action-space stimulation. This is facilitated through TDTPy (https://tdtpy.readthedocs.io/en/latest/)
 and custom circuits. We provided templates that can be updated in OpenEx/Synapse and serve as stimulation and recording examples. 
-RZ-2 Recording template: SpikerNet/OstimTestPulse_Reinforce_RX7.rcx
-RX-7 Stimulation template: SpikerNet/OstimTestPulse_Reinforce_RZ2.rcx
+```
+RX-7 Stimulation template: SpikerNet/OstimTestPulse_Reinforce_RX7.rcx
+RZ-2 Recording template: SpikerNet/OstimTestPulse_Reinforce_RZ2.rcx
+```
 # Running SpikerNet
 Once Gym environments and stim/recording setups are running and validated, running SpikerNet is as simple as:
 ```

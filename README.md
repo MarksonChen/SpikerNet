@@ -50,3 +50,30 @@ SpikerNet/
       #Various helper files
       spiker_env.py              #Name of the environment in genrl call
 ```
+All Gym environments need to include 4 key functions in their Python class declaration. This is defined in the spiker_env.py file.
+```
+class SpikerEnv(gym.Env):
+  def __init__(self, #Any necessary inputs)
+    #This is used to define any class variables necessary to run SpikerNet. See Code setup for examples
+  def step(self, stimSet):
+    #This determines what happens in each iteraction of RL. Inputs need to be self, action space change variable.
+  def reset(self):
+    #This determines what happens when a new episode/epoc is started.
+  def render(self, mode='human', close=False):
+    # This is an optional function used to define step by step readout. I use it to track learning during RL.
+```
+The class also includes class functions to help facilitate multiunit recording and detection. The environment and class RL functions are dependent on the experiment being run. The included example shows how to faciliate 
+neural recording through TDT circuits and the INSight stimulation system. Generally, the stimulation system is broadly defined to output an analog waveform which can be transduced by a stimulation system which has an Analog-to-Digital
+conversion option, like much of the TDT hardware. 
+# Example TDT Circuits
+We initially built SpikerNet to interface with TDT amplifiers, notably the RZ-2 for observation space neural recordings and an RX-7 for action-space stimulation. This is facilitated through TDTPy (https://tdtpy.readthedocs.io/en/latest/)
+and custom circuits. We provided templates that can be updated in OpenEx/Synapse and serve as stimulation and recording examples. 
+RZ-2 Recording template: SpikerNet/OstimTestPulse_Reinforce_RX7.rcx
+RX-7 Stimulation template: SpikerNet/OstimTestPulse_Reinforce_RZ2.rcx
+# Running SpikerNet
+Once Gym environments and stim/recording setups are running and validated, running SpikerNet is as simple as:
+```
+cd SpikerNet
+conda activate SpikerNet
+python SpikerNet_Main.py
+```

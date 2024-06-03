@@ -17,6 +17,7 @@ or
 python3 setup.py install
 ```
 Alternatively, each package can be installed individually.
+
 If using a TDT interface for in vivo control, run
 ```
 pip install tdtpy

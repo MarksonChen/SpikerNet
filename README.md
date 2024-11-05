@@ -37,7 +37,11 @@ SpikerNet can be run on the model by simply typing:
 ```
 python SpikerNet_Main.py
 ```
-Sit back and enjoy the run! Output files can be visualized using the SpikerNet_Plotter.py program.
+Sit back and enjoy the run! Output files can be visualized using the SpikerNet_Plotter.py program by running:
+```
+python SpikerNet_Plotter.py
+```
+in the directory containing the results (ie the directory where SpikerNet_Main.py was run.)
 # Running SpikerNet in In Vivo applications
 As every experiment will have widely varying control and sensing mechanisms, SpikerNet must be customized to each experiment. To do so, we highly recommend learning the structure of OpenAI gym environments.
 To do so, see the following tutorial: https://medium.com/@apoddar573/making-your-own-custom-environment-in-gym-c3b65ff8cdaa

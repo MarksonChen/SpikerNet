@@ -1,6 +1,7 @@
 # A Protocol for Artificial Intelligence-Guided Neural Control Using Deep Reinforcement Learning and Infrared Neural Stimulation (Coventry and Bartlett, STAR Protocols 2024)
 ![Screenshot of SpikerNet Setup.](https://github.com/bscoventry/SpikerNet_StarProtocols/blob/main/Figure1.png)
 This repository is a supplement to Coventry and Bartlett's tutorial on using Deep Reinforcement Learning for Closed-loop Neural Control, an algorithm we call SpikerNet.
+Protocol link:
 # Initialization and Setup
 To setup SpikerNet, both for computational models and in vivo runs, first download the anaconda environment: https://www.anaconda.com/
 Open the environment and initialize a specific SpikerNet environment by running:

@@ -1,4 +1,4 @@
-# SpikerNet_StarProtocols
+# A Protocol for Artificial Intelligence-Guided Neural Control Using Deep Reinforcement Learning and Infrared Neural Stimulation (Coventry and Bartlett, STAR Protocols 2024)
 ![Screenshot of SpikerNet Setup.](https://github.com/bscoventry/SpikerNet_StarProtocols/blob/main/Figure1.png)
 This repository is a supplement to Coventry and Bartlett's tutorial on using Deep Reinforcement Learning for Closed-loop Neural Control, an algorithm we call SpikerNet.
 # Initialization and Setup

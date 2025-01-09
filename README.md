@@ -89,5 +89,5 @@ python SpikerNet_Main.py
 If this protocol is utilized, please cite as:
 Coventry BS and Bartlett EL (2025). Protocol for artificial intelligence-guided neural control using deep reinforcement learning and infrared neural stimulation. STAR Protocols 6, 103496. DOI: https://doi.org/10.1016/j.xpro.2024.103496
 
-#License
+# License
 This software can be used under a CC-BY-NC 4.0 License.

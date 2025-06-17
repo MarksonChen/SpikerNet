@@ -18,10 +18,10 @@ import os
 from docopt import docopt
 from tabulate import tabulate
 
-from utils import progbar
-from swift import aswift
+from .utils import progbar
+from .swift import aswift
 
-from dbs import cDBS, pDBS
+from .dbs import cDBS, pDBS
 
 class MFM(object):
     def __init__(self,**kwargs):

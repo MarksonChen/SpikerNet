@@ -10,10 +10,11 @@ version_reqs = [
                 "numpy>=1.23",
                 "scipy>=1.10",
                 "matplotlib>=3.8",
-                # sim dependencies
+                "docopt>=0.6.2",
+                "tabulate>=0.9.0",
+                "scikit-learn>=1.7.0",
                 "pyNN==0.12.3",
                 "neuron>=8.2.4",
-                # RL agent, optional
                 "stable-baselines3==2.3.0",
                 ]
 

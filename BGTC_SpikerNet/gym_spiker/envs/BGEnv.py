@@ -19,11 +19,11 @@
 #Begin with module imports
 # import gym
 import gymnasium as gym
-from gym import error, spaces, utils
-from gym.utils import seeding
+from gymnasium import error, spaces, utils
+from gymnasium.utils import seeding
 import numpy as np
 from numpy import random
-from mfm import MFM
+from .mfm import MFM
 import torch
 
 import pdb
@@ -37,10 +37,11 @@ import scipy as sci
 import bisect
 from sklearn.metrics import mean_squared_error
 import scipy.signal as sig
+from importlib.resources import files
 import pickle
 
 class BGEnv(gym.Env):
-  metadata = {'render.modes': ['human']}
+  metadata = {"render_modes": [None, "human"], "render_fps": 30}
 
   def __init__(self, chSel = 4, stimLimits = [-10,10,60,600,30,200]):
     """
@@ -51,7 +52,7 @@ class BGEnv(gym.Env):
     #        stimLimits = [stimLow,stimHigh,PWLow,PWHigh]
     """
     super().__init__()          #For inheritence reasons
-    with open('trialPSTHB.pickle', 'rb') as f:
+    with files('gym_spiker.envs').joinpath('trialPSTH.pickle').open('rb') as f:
       self.targetPSTH = pickle.load(f)
     self.targetPSTH = np.asarray(self.targetPSTH)
     
@@ -64,6 +65,7 @@ class BGEnv(gym.Env):
     self.done = False
     self.rewardTarget = 25#1.5
     self.obs = []
+    self.info = {}
     self.stimHigh = stimLimits[1]
     self.stimLow = stimLimits[0]
     self.PWLow = stimLimits[2]
@@ -135,10 +137,14 @@ class BGEnv(gym.Env):
     self.checkEnd()
     print(self.reward)
     return self.obs, self.reward, self.done, {}
+  
   def reset(self):
     self.done = False
     self.reward = 0
     self.obs = 0
+    
+    return self.obs, self.info
+  
   def render(self, mode='human', close=False):
     if self.animate == 1:
         # plt.ion()

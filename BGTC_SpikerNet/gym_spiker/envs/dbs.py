@@ -1,6 +1,6 @@
 import numpy as np
 
-from swift import aswift
+from .swift import aswift
 
 class DBS(object):
     def __init__(self, dt=1e-3, stim_amp=1, width=60, tstart=0):

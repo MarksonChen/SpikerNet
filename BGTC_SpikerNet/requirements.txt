@@ -1,6 +1,6 @@
 # Note: File outdated
 
-gymnasium==0.29.1                # gym → gymnasium, 3.10-ready :contentReference[oaicite:2]{index=2}
+gymnasium==0.29.1                # gym → gymnasium, 3.10-ready
 box2d==2.3.10                    # builds on 3.10; supersedes box2d-py
 numpy>=1.23                      # 1.23+ supports 3.10
 scipy>=1.10

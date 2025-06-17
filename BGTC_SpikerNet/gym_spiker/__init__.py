@@ -12,6 +12,7 @@ from gymnasium.envs.registration import register
 # from gym.envs.registration import register
 
 register(
-    id='spiker-v0',              #This is the name you call the environment by
-    entry_point='gym_spiker.envs:BGEnv',         #This sets the name of the environment (BGEnv for BGTC model). 
+    id='spiker-v0',              # This is the name you call the environment by
+    entry_point='gym_spiker.envs:BGEnv',  # Entry point for BGTC model
 )
+

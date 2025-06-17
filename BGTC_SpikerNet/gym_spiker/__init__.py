@@ -8,7 +8,8 @@
 # OpenEphys, etc. setups. 
 # Note: Adapted from Ashish Poddar https://medium.com/@apoddar573/making-your-own-custom-environment-in-gym-c3b65ff8cdaa
 #----------------------------------------------------------------------------------------------------------------------------
-from gym.envs.registration import register
+from gymnasium.envs.registration import register
+# from gym.envs.registration import register
 
 register(
     id='spiker-v0',              #This is the name you call the environment by

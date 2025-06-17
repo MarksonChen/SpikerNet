@@ -1,0 +1,19 @@
+# requirements_py310.txt  ── pin only what must be pinned
+gymnasium==0.29.1                # gym → gymnasium, 3.10-ready :contentReference[oaicite:2]{index=2}
+box2d==2.3.10                    # builds on 3.10; supersedes box2d-py
+numpy>=1.23                      # 1.23+ supports 3.10
+scipy>=1.10
+pandas>=1.5
+matplotlib>=3.8
+scikit-learn>=1.5
+torch==2.3.1
+# for CUDA: pip install torch==2.3.1+cu121 --index-url https://download.pytorch.org/whl/cu121
+
+
+# optional RL agent
+stable-baselines3==2.3.0
+# optional neural simulators
+pyNN==0.12.3
+neuron>=8.2.4
+# optional hardware stubs
+#tdtpy~=0.10.*        # comment out if you only use the BGTC simulator

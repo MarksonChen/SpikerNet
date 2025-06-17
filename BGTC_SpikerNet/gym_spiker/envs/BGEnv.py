@@ -17,7 +17,8 @@
 # Note: Adapted from Ashish Poddar https://medium.com/@apoddar573/making-your-own-custom-environment-in-gym-c3b65ff8cdaa
 #----------------------------------------------------------------------------------------------------------------------------
 #Begin with module imports
-import gym
+# import gym
+import gymnasium as gym
 from gym import error, spaces, utils
 from gym.utils import seeding
 import numpy as np

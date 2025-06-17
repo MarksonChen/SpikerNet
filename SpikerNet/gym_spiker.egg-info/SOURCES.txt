@@ -1,6 +1,0 @@
-setup.py
-gym_spiker.egg-info/PKG-INFO
-gym_spiker.egg-info/SOURCES.txt
-gym_spiker.egg-info/dependency_links.txt
-gym_spiker.egg-info/requires.txt
-gym_spiker.egg-info/top_level.txt

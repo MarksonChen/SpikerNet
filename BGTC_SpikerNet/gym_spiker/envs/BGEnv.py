@@ -43,7 +43,7 @@ import pickle
 class BGEnv(gym.Env):
   metadata = {"render_modes": [None, "human"], "render_fps": 30}
 
-  def __init__(self, chSel = 4, stimLimits = [-10,10,60,600,30,200]):
+  def __init__(self, chSel = 4, stimLimits = [-10,10,60,600,30,200], render_mode=None):
     """
     The init function will initialize our startup variables and begin the process of setting up the
     TDT hardware. This implementation will use the RX-7 for both stim and record.
@@ -52,6 +52,7 @@ class BGEnv(gym.Env):
     #        stimLimits = [stimLow,stimHigh,PWLow,PWHigh]
     """
     super().__init__()          #For inheritence reasons
+    self.render_mode = render_mode
     with files('gym_spiker.envs').joinpath('trialPSTH.pickle').open('rb') as f:
       self.targetPSTH = pickle.load(f)
     self.targetPSTH = np.asarray(self.targetPSTH)
@@ -93,12 +94,9 @@ class BGEnv(gym.Env):
     self. max_episode_len = 1000
     
   def step(self, stimSet):
-    """
-    This is the step command in which we adjust stimulation parameters and run the stimulation set.
-    Inputs: stimSet = A vector containing the current action values. Has form:
-                      stimSet = [NumPulses,INSAmpVal,TmBetPulses, PulseWidth]
-    """
-        #return self.obs, self.reward, self.done, {}
+    """Run one environment step."""
+    # `stimSet` is a vector of action values with the form
+    # [NumPulses, INSAmpVal, TmBetPulses, PulseWidth]
     stimSet = self.checkPulses(stimSet)                  #Make sure learned pulses aren't violating upper or lower bounds
               #Generate waveform to be sent to stimulator
     kwargs = {
@@ -128,7 +126,8 @@ class BGEnv(gym.Env):
         evokedPXX = mfm.getPXX()
     reward = self.getScores(self.targetPSTH,evokedPXX,scoreType=4)
     self.reward = reward
-    self.obs = evokedPXX
+    # ensure observation dtype matches the space
+    self.obs = np.asarray(evokedPXX, dtype=self.observation_space.dtype)
     self.obsStore[str(self.counter)] = evokedPXX
     self.rewardHist[str(self.counter)] = reward
     self.paramStore[str(self.counter)] = stimSet
@@ -136,13 +135,15 @@ class BGEnv(gym.Env):
     self.counter = self.counter + 1
     self.checkEnd()
     print(self.reward)
-    return self.obs, self.reward, self.done, {}
+    # Gymnasium requires (obs, reward, terminated, truncated, info)
+    return self.obs, self.reward, self.done, False, {}
   
-  def reset(self):
+  def reset(self, *, seed=None, options=None):
+    super().reset(seed=seed)
     self.done = False
     self.reward = 0
-    self.obs = 0
-    
+    # return a valid observation for the Box space
+    self.obs = np.zeros(self.observation_space.shape, dtype=self.observation_space.dtype)
     return self.obs, self.info
   
   def render(self, mode='human', close=False):

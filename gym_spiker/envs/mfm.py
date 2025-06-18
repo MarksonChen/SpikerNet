@@ -20,7 +20,6 @@ from tabulate import tabulate
 
 from .utils import progbar
 from .swift import aswift
-
 from .dbs import cDBS, pDBS
 
 class MFM(object):
@@ -65,7 +64,7 @@ class MFM(object):
                  'tau_f : {:0.4f} s\n')\
                  .format(*[self.params[key] for key in ['swift_f','swift_tau_s','swift_tau_f']])
 
-        
+
 
         if self.params['cDBS']:
             cDBS =('\ncDBS Parameters\n'
@@ -85,9 +84,9 @@ class MFM(object):
                   'ref period : {}\n')\
                   .format(*[self.params[key] for key in ['pDBS_phase','pDBS_amp','pDBS_power_thr','pDBS_ref_period']])
         else: pDBS=''
-            
+
         return general+SWIFT+cDBS+pDBS
-        
+
     def _load_params(self,kwargs):
         def process_kwargs(kwargs):
             for key,value in kwargs.items():
@@ -105,15 +104,15 @@ class MFM(object):
         self.params['dt']         = 1e-3        # s
         self.params['stim_start'] = 0.0         # s
         self.params['tstop']      = 50.0        # s
-        self.params['RunID']      = -1          
-                
+        self.params['RunID']      = -1
+
         #DD parameters
         self.params['DD'] = True
 
         #Stimulation parameters
         self.params['stim_target'] = 'STN'
         self.params['Cm']          = 1e-4       # F
-        
+
         #cDBS parameters
         self.params['cDBS']        = False
         self.params['cDBS_f']      = 130.       # (Hz)
@@ -127,7 +126,7 @@ class MFM(object):
         self.params['pDBS_width'] = 60          # us
         self.params['pDBS_ref_period'] = 0.3    # s
         self.params['pDBS_power_thr'] = -28.57  # dB
-        
+
         #SWIFT params
         self.params['state_target'] = 'p1'
         self.params['swift_f']      = 29        # Hz
@@ -137,7 +136,7 @@ class MFM(object):
 
         self._options = self.params.copy()
         process_kwargs(kwargs)
-        
+
         #Set parameters dependent on other parameters
         self.params['N'] = int(np.ceil(self.params['tstop']/self.params['dt']))
         self.params['fs'] = 1./self.params['dt']
@@ -145,7 +144,7 @@ class MFM(object):
         if self.params['swift_tau_s'] is None:
             self.params['swift_tau_s'] = 1./self.params['swift_f'] * self.params['swift_c']
         self.params['swift_tau_f'] = self.params['swift_tau_s'] / self.params['swift_s2f']
-                         
+
     def _set_MFM_params(self):
         self.phin = 15
         self.noiseAmp = 0.03
@@ -276,8 +275,8 @@ class MFM(object):
             self.vd2e = 1.4
             self.vp2d2 = -0.5
             self.vp2p2 = -0.07
-            self.thetap2 = 8 
-            self.thetaST = 9 
+            self.thetap2 = 8
+            self.thetaST = 9
 
     def _set_DBS(self):
         if self.params['cDBS']:
@@ -288,7 +287,7 @@ class MFM(object):
                              tstart   = self.params['stim_start'])
         else:
             self.cDBS = None
-            
+
         self.pDBS = pDBS(dt         = self.params['dt'],
                          f          = self.params['swift_f'],
                          tau_s      = self.params['swift_tau_s'],
@@ -304,7 +303,7 @@ class MFM(object):
             return Q/(1+np.exp(-(V-theta)/3.8))
 
         i = self.i
-        
+
         dSdt = np.zeros(20)
 
         dSdt[self.phie]= self.S[i,self.phie_dot]
@@ -380,20 +379,20 @@ class MFM(object):
             cDBS_C = self.cDBS.advance()
             self.S[i,self.struct[self.params['stim_target']]] += cDBS_C/self.params['Cm']
             if cDBS_C != 0: self.memory['stim'][i+1] = cDBS_C
-            
+
         else:
             pDBS_C = self.pDBS.advance(self.S[i,self.struct[self.params['state_target']]])
             if self.params['pDBS']:
                 self.S[i,self.struct[self.params['stim_target']]] += pDBS_C/self.params['Cm']
                 if pDBS_C != 0: self.memory['stim'][i+1] = pDBS_C
-            
+
             self.memory['amp'][i+1]   = self.pDBS.amp
             self.memory['phase'][i+1] = self.pDBS.phase
-            
+
         #Advance
         #====================================================================================
         self.S[i+1,:] = self.S[i,:]+self.params['dt']*dSdt
-        
+
         #Noise
         #====================================================================================
         self.S[i+1,self.Ve] += self.noiseAmp*np.random.normal(0,1)*np.sqrt(self.params['dt'])*self.Qe*(1-sigmoid(self.S[i+1,self.Ve], 1, self.thetae))*sigmoid(self.S[i,self.Ve], 1, self.thetae)
@@ -401,17 +400,17 @@ class MFM(object):
         self.S[i+1,self.Vi] += self.noiseAmp*np.random.normal(0,1)*np.sqrt(self.params['dt'])*self.Qi*(1-sigmoid(self.S[i+1,self.Vi], 1, self.thetai))*sigmoid(self.S[i,self.Vi], 1, self.thetai)
 
         self.S[i+1,self.Vd1] += self.noiseAmp*np.random.normal(0,1)*np.sqrt(self.params['dt'])*self.Qd1*(1-sigmoid(self.S[i+1,self.Vd1], 1, self.thetad1))*sigmoid(self.S[i,self.Vd1], 1, self.thetad1)
-        
+
         self.S[i+1,self.Vd2] += self.noiseAmp*np.random.normal(0,1)*np.sqrt(self.params['dt'])*self.Qd2*(1-sigmoid(self.S[i+1,self.Vd2], 1, self.thetad2))*sigmoid(self.S[i,self.Vd2], 1, self.thetad2)
-        
+
         self.S[i+1,self.Vp1] += self.noiseAmp*np.random.normal(0,1)*np.sqrt(self.params['dt'])*self.Qp1*(1-sigmoid(self.S[i+1,self.Vp1], 1, self.thetap1))*sigmoid(self.S[i,self.Vp1], 1, self.thetap1)
-        
+
         self.S[i+1,self.Vp2] += self.noiseAmp*np.random.normal(0,1)*np.sqrt(self.params['dt'])*self.Qp2*(1-sigmoid(self.S[i+1,self.Vp2], 1, self.thetap2))*sigmoid(self.S[i,self.Vp2], 1, self.thetap2)
-        
+
         self.S[i+1,self.VST] += self.noiseAmp*np.random.normal(0,1)*np.sqrt(self.params['dt'])*self.QST*(1-sigmoid(self.S[i+1,self.VST], 1, self.thetaST))*sigmoid(self.S[i,self.VST], 1, self.thetaST)
-        
+
         self.S[i+1,self.Vs] += self.noiseAmp*np.random.normal(0,1)*np.sqrt(self.params['dt'])*self.Qs*(1-sigmoid(self.S[i+1,self.Vs], 1, self.thetas))*sigmoid(self.S[i,self.Vs], 1, self.thetas)
-        
+
         self.S[i+1,self.Vr] += self.noiseAmp*np.random.normal(0,1)*np.sqrt(self.params['dt'])*self.Qr*(1-sigmoid(self.S[i+1,self.Vr], 1, self.thetar))*sigmoid(self.S[i,self.Vr], 1, self.thetar)
 
         self.i += 1
@@ -426,7 +425,7 @@ class MFM(object):
             #if self.params['verbose']: self.progbar.display(float(self.i)/(self.params['N']-2))
             if self.params['verbose']: self.progbar.update(float(self.i)/(self.params['N']-2))
         if self.params['verbose']: print()
-        
+
     def save(self,fname=None):
         if fname == None:
             if not os.path.isdir('data'):
@@ -454,7 +453,7 @@ class MFM(object):
         pickle.dump(self.__dict__,open(fname,'wb'))
     def load(self,fname):
         self.__dict__.update(pickle.load(open(fname,'rb')))
-        
+
     def plot(self,PSD_seg=0.5):
         from scipy import signal
         import matplotlib as mpl
@@ -466,14 +465,14 @@ class MFM(object):
         f,Pxx = signal.welch(self.S[:,self.struct[self.params['state_target']]],1/self.params['dt'],nperseg=2048)
         Pxx = 10*np.log10(Pxx)
 
-        
-        
+
+
         fig,ax = plt.subplots()
         ax.plot(f[f<100],Pxx[f<100])
         ax.set_ylabel('PSD (dB/Hz)')
         ax.set_xlabel('Frequency (Hz)')
         plt.tight_layout()
-        
+
         #if self.params['pDBS']:
         fig,ax = plt.subplots(4,1,sharex=True)
         ax[0].plot(t,self.S[:,self.struct[self.params['state_target']]],label='state')
@@ -496,7 +495,7 @@ class MFM(object):
     @property
     def options(self):
         return self._options
-    
+
     def getPXX(self,PSD_seg = 0.5):
         from scipy import signal
 
@@ -533,9 +532,9 @@ def main():
         print(tabulate(data, headers=headers))
         print('\nFor more details, such as units, etc, look at the source of MFM._load_params().')
         sys.exit()
-        
+
     kwargs = parse_kwargs(args['<key>=<value>'])
-    
+
     mfm = MFM(**kwargs)
     print(mfm)
     mfm.run()

@@ -13,9 +13,9 @@ cd SpikerNet
 Setup:
 
 ```bash
-python -m pip install --upgrade build pip
 conda create -n spikernet python=3.10 -y
 conda activate spikernet
+python -m pip install --upgrade build pip
 ```
 
 To install the SpikerNet gym only:

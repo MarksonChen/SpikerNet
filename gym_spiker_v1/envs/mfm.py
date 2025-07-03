@@ -423,8 +423,8 @@ class MFM(object):
             self.advance()
 
             #if self.params['verbose']: self.progbar.display(float(self.i)/(self.params['N']-2))
-            if self.params['verbose']: self.progbar.update(float(self.i)/(self.params['N']-2))
-        if self.params['verbose']: print()
+        #     if self.params['verbose']: self.progbar.update(float(self.i)/(self.params['N']-2))
+        # if self.params['verbose']: print()
 
     def save(self,fname=None):
         if fname == None:
@@ -507,6 +507,7 @@ class MFM(object):
         return Pxx
     def getLFP(self):
         return self.S[:,self.struct[self.params['state_target']]]
+
 def main():
     def parse_kwargs(kwargs):
         args = {}

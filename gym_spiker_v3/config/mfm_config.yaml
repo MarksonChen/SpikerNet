@@ -1,0 +1,122 @@
+# MFM Configuration - exact match to original hardcoded values
+simulation:
+  dt: 1e-3          # s
+  tstop: 50.0       # s
+  stim_start: 0.0   # s
+  verbose: true
+  DD: true
+  RunID: -1
+
+# DBS parameters
+cDBS:
+  cDBS: false         # boolean flag
+  cDBS_f: 130.0       # Hz
+  cDBS_amp: 3.0       # mA
+  cDBS_width: 60.0    # us
+  stim_target: "STN"
+  state_target: "p1"
+
+# System parameters
+system:
+  Cm: 1e-4            # F
+  phin: 15
+  noiseAmp: 0.03
+  re: 80              # mm
+  gammae: 125         # s^-1
+  alpha: 160          # s^-1
+  beta: 640           # s^-1
+  sigmaprime: 3.8     # mV
+
+# Connection strengths (mVs) - exact original values
+connections:
+  vee: 1.6
+  vie: 1.6
+  vei: -1.9
+  vii: -1.9
+  ves: 0.4
+  vis: 0.4
+  vd1e: 1.0
+  vd1d1: -0.3
+  vd1s: 0.1
+  vd2e: 0.7
+  vd2d2: -0.3
+  vd2s: 0.05
+  vp1d1: -0.1
+  vp1p2: -0.03
+  vp1ST: 0.3
+  vp2d2: -0.3
+  vp2p2: -0.1
+  vp2ST: 0.3
+  vSTe: 0.1
+  vSTp2: -0.04
+  vse: 0.8
+  vsp1: -0.03
+  vsr: -0.4
+  vsn: 0.5
+  vre: 0.15
+  vrs: 0.03
+  vd2d1: 0
+
+# Parkinsonian state modifications (applied if DD=true)
+parkinsonian:
+  vee: 1.4
+  vie: 1.4
+  vei: -1.6
+  vii: -1.6
+  vd1e: 0.5
+  vd2e: 1.4
+  vp2d2: -0.5
+  vp2p2: -0.07
+  thetap2: 8
+  thetaST: 9
+
+# Population parameters - Maximum firing rates (s^-1)
+populations:
+  Qe: 300
+  Qi: 300
+  Qd1: 65
+  Qd2: 65
+  Qp1: 250
+  Qp2: 300
+  QST: 500
+  Qs: 300
+  Qr: 500
+
+  # Firing thresholds (mV)
+  thetae: 14
+  thetai: 14
+  thetad1: 19
+  thetad2: 19
+  thetap1: 10
+  thetap2: 9
+  thetaST: 10
+  thetas: 13
+  thetar: 13
+
+# Axonal delays (ms) - converted to timesteps in code
+delays:
+  taues: 0.035
+  tauis: 0.035
+  taud1e: 0.002
+  taud2e: 0.002
+  taud1s: 0.002
+  taud2s: 0.002
+  taup1d1: 0.001
+  taup1p2: 0.001
+  taup1ST: 0.001
+  taup2d2: 0.001
+  taup2ST: 0.001
+  tauSTe: 0.001
+  tauSTp2: 0.001
+  tause: 0.050
+  taure: 0.050
+  tausp1: 0.003
+  tausr: 0.002
+  taurs: 0.002
+  taud2d1: 0.001
+
+# Initial state - exact values from original
+initial_state: [43.74102506, -1.15197439, 6.96276347, -22.25852135, 7.19671392,
+                -28.57548512, 17.26916297, 132.89911127, 9.71319243, 67.69191101,
+                9.57769785, -21.11198645, 5.33943222, -22.62375016, 0.54172422,
+                -22.23467637, 6.76173506, 143.5386694, 7.49756915, 23.59983148]

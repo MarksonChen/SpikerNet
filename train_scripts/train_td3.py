@@ -1,4 +1,4 @@
-import gymnasium as gym, torch, gym_spiker
+import gymnasium as gym, torch, gym_spiker_v1
 from stable_baselines3 import TD3
 from stable_baselines3.common.vec_env import SubprocVecEnv, VecMonitor
 from stable_baselines3.common.logger import configure
@@ -44,7 +44,7 @@ if __name__ == "__main__":
         seed=SEED,
     )
     model.set_logger(logger)
-    
+
     model.learn(total_timesteps=TOTAL_STEPS, log_interval=10)
     model.save(MODEL_PATH)
     env.close()

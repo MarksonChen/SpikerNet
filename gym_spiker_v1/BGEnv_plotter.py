@@ -1,10 +1,22 @@
+import time
+
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy import signal
 import gymnasium as gym
 
-from gym_spiker.envs.BGEnv import BGEnv
-from gym_spiker.envs.mfm   import MFM
+from gym_spiker_v1.envs.BGEnv import BGEnv
+from gym_spiker_v1.envs.mfm   import MFM
+
+from contextlib import contextmanager
+@contextmanager
+def elapsed(label="time elapsed"):
+    t0 = time.perf_counter()
+    yield
+    dt = time.perf_counter() - t0
+    sec = int(dt)
+    ms  = int((dt - sec) * 1000)
+    print(f"{label}: {sec}s {ms}ms")
 
 np.random.seed(0)
 
@@ -19,13 +31,16 @@ def simulate(env, action):
     kwargs = dict(cDBS=True,
                   cDBS_amp   = float(action[0]),
                   cDBS_width = float(action[1]),
-                  cDBS_f     = float(action[2]))
+                  cDBS_f     = float(action[2]),
+                  verbose    = False,)
     state = np.random.get_state()
     mfm   = MFM(**kwargs); mfm.run()
     np.random.set_state(state)
 
     obs, _ = env.reset(seed=0)
-    obs, reward, *_ = env.step(action)
+    with elapsed("env.step"):
+        obs, reward, *_ = env.step(action)
+
     psd = obs.copy()
 
     fs   = 1.0 / mfm.params['dt']  # 1000 Hz

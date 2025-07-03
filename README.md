@@ -1,7 +1,20 @@
-Forked from https://github.com/bscoventry/DeepRLClosedLoopControl.
+Forked from: https://github.com/bscoventry/DeepRLClosedLoopControl, the repo for paper "Closed-Loop Reinforcement Learning Based Deep Brain Stimulation Using SpikerNet: A Computational Model" ([Coventry et al.](https://ieeexplore.ieee.org/document/10123797))
 
-A lightweight, Gymnasium-compatible environment that emulates Basal-Ganglia 
-Thalamo-Cortical (BGTC) neural dynamics, plus training scripts from SpikerNet
+SpikerNet's model is from [ModelDB 247310](https://modeldb.science/247310?tab=1): Adaptive dual control of deep brain stimulation in Parkinsons disease simulations ([Grado et al 2018](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1006606))
+
+---
+
+GymSpiker v0: See [bscoventry/DeepRLClosedLoopControl/BGTC_SpikerNet
+/gym_spiker/](https://github.com/bscoventry/DeepRLClosedLoopControl/tree/main/BGTC_SpikerNet/gym_spiker)
+
+GymSpiker v1: Updated to use Python 3.10 & OpenAI's gymnasium
+
+GymSpiker v2: Removed codes irrelevant for RL training
+
+GymSpiker v3: Significantly updated to use modern python practices, most 
+importantly [OmegaConf](https://github.com/omry/omegaconf)
+
+---
 
 Clone this repo:
 
@@ -28,14 +41,4 @@ To install the SpikerNet gym + dependencies for the training scripts:
 
 ```bash
 pip install -e .[train]
-```
-
-Smoke test:
-
-```python
-import gymnasium as gym
-import gym_spiker
-env = gym.make("spiker-v0")
-obs, _ = env.reset()
-print(f"Observation shape: {obs.shape}") # Expected: (1025,)
 ```

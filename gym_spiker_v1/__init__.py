@@ -12,6 +12,6 @@ from gymnasium.envs.registration import register
 
 register(
     id='spiker-v1',
-    entry_point='gym_spiker.envs:BGEnv',  # Entry point for BGTC model
+    entry_point='gym_spiker_v1.envs:BGEnv',  # Entry point for BGTC model
 )
 

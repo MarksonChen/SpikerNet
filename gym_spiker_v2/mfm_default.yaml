@@ -1,0 +1,121 @@
+# --- High‑level --------------------------------------------------------------
+general:
+  dt:           1.0e-3      # s
+  tstop:        50.0        # s
+  stim_start:   0.0         # s
+  verbose:      true
+  run_id:       -1
+
+disease_model:
+  dopaminergic_depletion:   true    # “DD” in the original code
+
+dbs:
+  closed_loop:  false
+  frequency:    130.0       #Hz
+  amplitude:    3.0         #mV
+  width:        60.0        #µs
+  target_state: p1
+  stim_target:  STN
+  cm:           1.0e-4      #F
+
+# --- Model constants --------------------------------------------------------
+noise_amp:  0.03
+phi_n:      15
+gamma_e:    125
+alpha:      160
+beta:       640
+sigma_prime: 3.8
+
+delays_ms:           # Physical delays (ms) – names identical to the old ones
+  tau_es:   0.035    # τ_{e→s}
+  tau_is:   0.035    # τ_{i→s}
+  tau_d1e:  0.002    # τ_{d1→e}
+  tau_d2e:  0.002    # τ_{d2→e}
+  tau_d1s:  0.002    # τ_{d1→s}
+  tau_d2s:  0.002    # τ_{d2→s}
+  tau_p1d1: 0.001    # τ_{p1→d1}
+  tau_p1p2: 0.001    # τ_{p1→p2}
+  tau_p1st: 0.001    # τ_{p1→ST}
+  tau_p2d2: 0.001    # τ_{p2→d2}
+  tau_p2st: 0.001    # τ_{p2→ST}
+  tau_ste:  0.001    # τ_{ST→e}
+  tau_stp2: 0.001    # τ_{ST→p2}
+  tau_s_e:  0.050    # τ_{s→e}
+  tau_r_e:  0.050    # τ_{r→e}
+  tau_sp1:  0.003    # τ_{s→p1}
+  tau_sr:   0.002    # τ_{s→r}
+  tau_rs:   0.002    # τ_{r→s}
+  tau_d2d1: 0.001    # τ_{d2→d1}
+
+connections_mV:      # Synaptic efficacies (mV·s)
+  vee:    1.6    # e→e
+  vie:    1.6    # i→e
+  vei:   -1.9    # e→i
+  vii:   -1.9    # i→i
+  ves:    0.4    # e→s
+  vis:    0.4    # i→s
+  vd1e:   1.0    # d1→e
+  vd1d1: -0.3    # d1→d1
+  vd1s:   0.1    # d1→s
+  vd2e:   0.7    # d2→e
+  vd2d2: -0.3    # d2→d2
+  vd2s:   0.05   # d2→s
+  vp1d1: -0.1    # p1→d1
+  vp1p2: -0.03   # p1→p2
+  vp1st:  0.3    # p1→ST
+  vp2d2: -0.3    # p2→d2
+  vp2p2: -0.1    # p2→p2
+  vp2st:  0.3    # p2→ST
+  vste:   0.1    # ST→e
+  vstp2: -0.04   # ST→p2
+  vse:    0.8    # s→e
+  vsp1:  -0.03   # s→p1
+  vsr:   -0.4    # s→r
+#  vsn:    0.5    # s→n (SN→?)
+  vre:    0.15   # r→e
+  vrs:    0.03   # r→s
+  vd2d1:  0.0    # d2→d1
+
+sigmoid_Q_s_inv:     # Maximum firing rates (s⁻¹)
+  e:   300
+  i:   300
+  d1:   65
+  d2:   65
+  p1:  250
+  p2:  300
+  STN: 500
+  s:   300
+  r:   500
+
+thresholds_mV:       # θ‑values
+  e:   14
+  i:   14
+  d1:  19
+  d2:  19
+  p1:  10
+  p2:   9         # will be overwritten to 8 in DD mode
+  STN: 10         # will be overwritten to 9 in DD mode
+  s:   13
+  r:   13
+
+initial_state:       # a 20‑vector (same as the hard‑coded list)
+  -  43.74102506   # φ_e
+  -  -1.15197439   # φ̇_e
+  -   6.96276347   # V_e
+  - -22.25852135   # V̇_e
+  -   7.19671392
+  - -28.57548512
+  -  17.26916297
+  - 132.89911127
+  -   9.71319243
+  -  67.69191101
+  -   9.57769785
+  - -21.11198645
+  -   5.33943222
+  - -22.62375016
+  -   0.54172422
+  - -22.23467637
+  -   6.76173506
+  - 143.53866940
+  -   7.49756915
+  -  23.59983148

@@ -7,12 +7,12 @@
 #                              eases memory load and makes the data pipeline flow easier.
 #                   12/13/20 - Initial trial runs and testing
 #                   12/14/20 - Added additional MSE reward functions
-#                   12/15/20 - First successful trial run. 
+#                   12/15/20 - First successful trial run.
 #                   12/16/20 - Refactoring of save states and total number of runs
 # Purpose: This is the definition file of the spiker reinforcement learning framework.
 # Hardware: This version implements real time reinforcement learning using Tucker-Davis Technologies (TDT)
-# Sys3 hardware. Use of ActiveX or TDTPy is necessary. This can be modified for Blackrock, Plexon, 
-# OpenEphys, etc. setups. This particular application uses the RX-7, but can be easily modified for other 
+# Sys3 hardware. Use of ActiveX or TDTPy is necessary. This can be modified for Blackrock, Plexon,
+# OpenEphys, etc. setups. This particular application uses the RX-7, but can be easily modified for other
 # DSP processors.
 # Note: Adapted from Ashish Poddar https://medium.com/@apoddar573/making-your-own-custom-environment-in-gym-c3b65ff8cdaa
 #----------------------------------------------------------------------------------------------------------------------------
@@ -53,10 +53,10 @@ class BGEnv(gym.Env):
     """
     super().__init__()          #For inheritence reasons
     self.render_mode = render_mode
-    with files('gym_spiker.envs').joinpath('trialPSTH.pickle').open('rb') as f:
+    with files('gym_spiker_v1.envs').joinpath('trialPSTH.pickle').open('rb') as f:
       self.targetPSTH = pickle.load(f)
     self.targetPSTH = np.asarray(self.targetPSTH)
-    
+
     self.obsStore = {}
     self.rewardHist = {}
     self.paramStore = {}
@@ -76,8 +76,8 @@ class BGEnv(gym.Env):
     self.reward = 0                 #Reward when completing a state.
     self.animate = 1
     self.fs = 1000
-    
-    
+
+
     self.numStimTrials = 1             #Number of stimulation trials to generate PSTH
     self.datalen = 23193                #Corresponds to 950ms on time
     self.binSize = 5                    #Bin Size in ms
@@ -90,9 +90,9 @@ class BGEnv(gym.Env):
     self.observation_space = gym.spaces.Box(low = self.obsLow,high = self.obsHigh)
     self.spkDetectDeadTime = 0.003
     self.spkSearchTime = 0.002
-    
+
     self. max_episode_len = 1000
-    
+
   def step(self, stimSet):
     """Run one environment step."""
     # `stimSet` is a vector of action values with the form
@@ -105,20 +105,20 @@ class BGEnv(gym.Env):
         'cDBS_f': stimSet[2],
         'cDBS_width': stimSet[1]
     }
-    def parse_kwargs(kwargs):
-        args = {}
-        for arg in kwargs:
-            key,value = arg.split('=')
-            if value.lower() == 'false': value = False
-            elif value.lower() == 'true' : value = True
-            else:
-                try: value = int(value)
-                except:
-                    try: value = float(value)
-                    except:
-                        pass
-            args[key] = value
-        return args
+    # def parse_kwargs(kwargs):
+    #     args = {}
+    #     for arg in kwargs:
+    #         key,value = arg.split('=')
+    #         if value.lower() == 'false': value = False
+    #         elif value.lower() == 'true' : value = True
+    #         else:
+    #             try: value = int(value)
+    #             except:
+    #                 try: value = float(value)
+    #                 except:
+    #                     pass
+    #         args[key] = value
+    #     return args
     mfm = MFM(**kwargs)
     dataStore = {}
     for ck in range(self.numStimTrials):
@@ -137,7 +137,7 @@ class BGEnv(gym.Env):
     print(self.reward)
     # Gymnasium requires (obs, reward, terminated, truncated, info)
     return self.obs, self.reward, self.done, False, {}
-  
+
   def reset(self, *, seed=None, options=None):
     super().reset(seed=seed)
     self.done = False
@@ -145,7 +145,7 @@ class BGEnv(gym.Env):
     # return a valid observation for the Box space
     self.obs = np.zeros(self.observation_space.shape, dtype=self.observation_space.dtype)
     return self.obs, self.info
-  
+
   def render(self, mode='human', close=False):
     if self.animate == 1:
         # plt.ion()
@@ -167,7 +167,7 @@ class BGEnv(gym.Env):
         plt.plot(self.targetPSTH)
         ax2 = plt.subplot(212)
         plt.plot(self.obs)
-        
+
         plt.pause(0.001)
         plt.draw()
 
@@ -190,7 +190,7 @@ class BGEnv(gym.Env):
     return waveform
 
   def checkPulses(self,stimSet):
-    # if stimSet[0] < 1: 
+    # if stimSet[0] < 1:
     #     stimSet[0] = 1
     # stimSet[0] = int(stimSet[0])
     # pdb.set_trace()
@@ -206,11 +206,11 @@ class BGEnv(gym.Env):
     #         stimSet[3][ck] = self.PWLow
     #     if stimSet[3][ck] > self.PWHigh:
     #         stimSet[3][ck] = self.PWHigh
-    
+
     if np.isnan(stimSet[0]):
        stimSet[0] = 0
     if np.isnan(stimSet[1]):
-       stimSet[1] = 0  
+       stimSet[1] = 0
     if np.isnan(stimSet[2]):
        stimSet[2] = 0
     if stimSet[0] < self.stimLow:
@@ -305,7 +305,7 @@ class BGEnv(gym.Env):
     #     return spks
     dataSize = np.shape(data)
     self.spikeThreshStore = np.zeros(dataSize[0])
-    
+
     curData = data
     madEstimate = sci.nanmedian(np.abs(curData))/0.6745
     threshold = self.stdmin * madEstimate
@@ -331,7 +331,7 @@ class BGEnv(gym.Env):
     search_end = int(search_range*self.fs)
     aligned_spikes = [self.get_next_minimum(signal, t, search_end) for t in threshold_crossings]
     return np.array(aligned_spikes)
-  
+
   def sigFilter(self,inSignal):
     filtSig = {}
     for rr in range(self.numStimTrials):
@@ -349,7 +349,7 @@ class BGEnv(gym.Env):
       curSpks = self.spkDetect(curDat)
       spks[str(tt)] = curSpks
     return spks
-  
+
   def densityEstPSTH(self,PSTH):
     numtrials = self.numStimTrials
     PSTH = PSTH.tolist()         #Matlab vars do not like numpy arrays
